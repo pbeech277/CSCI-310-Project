@@ -1,4 +1,4 @@
-
+import java.util.Arrays;
 public class BankImplement implements Bank{
     int numOfCustomers;         //number of customers
     int numOfResources;         //number of resources
@@ -66,7 +66,22 @@ public class BankImplement implements Bank{
      * allocation, and need
      */
     public void getState(){
+        //outputs available
+        for(int i = 0; i < numOfResources; i++)
+            System.out.println(Arrays.toString(available));
+        
+        //outputs maximum
+         for(int i = 0; i < numOfResources; i++)
+            System.out.println(Arrays.toString(maximum));
 
+        //outputs allocation
+        for(int i = 0; i < numOfResources; i++)
+            System.out.println(Arrays.toString(allocation));
+
+        //outputs need
+        for(int i = 0; i < numOfResources; i++)
+            System.out.println(Arrays.toString(need));
+    
 
     }//end getState
 
@@ -97,7 +112,19 @@ public class BankImplement implements Bank{
      * customerNumber -The customer requesting resource
      */
     public boolean canRun(int customerNumber){
-        
-    }
+        boolean safeToRun = true;
+
+        for(int i = 0; i < numOfResources; i++){
+            if(customerRequest[i] > need[customerNumber][i]){
+                safeToRun = false;
+                break;
+            }
+            if(safeToRun && customerRequest[i] > available[i]){
+                safeToRun = false;
+                break;
+            }
+        }
+        return safeToRun;
+    }//end canRun
 
 }//end BankImplement
