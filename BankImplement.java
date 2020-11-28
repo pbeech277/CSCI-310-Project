@@ -112,7 +112,19 @@ public class BankImplement implements Bank{
      * customerNumber -The customer requesting resource
      */
     public boolean canRun(int customerNumber){
-        
-    }
+        boolean safeToRun = true;
+
+        for(int i = 0; i < numOfResources; i++){
+            if(customerRequest[i] > need[customerNumber][i]){
+                safeToRun = false;
+                break;
+            }
+            if(safeToRun && customerRequest[i] > available[i]){
+                safeToRun = false;
+                break;
+            }
+        }
+        return safeToRun;
+    }//end canRun
 
 }//end BankImplement
