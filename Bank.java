@@ -1,6 +1,6 @@
 /**
  * Bank.java
- * 
+ * @author Rose, Thomas, Patrick
  */
 
 

@@ -1,6 +1,16 @@
+<<<<<<< Updated upstream
 public class Customer extends Thread{
     Bank banks;
     private int customerNumbers;
+=======
+/*
+* Customer.java
+* @author Rose, Thomas, Patrick
+*/
+public class Customer implements Runnable{
+    Bank bank;
+    int threads = 5;
+>>>>>>> Stashed changes
 
     public Customer(int customerNumber, Bank bank){
         banks = bank;
@@ -10,6 +20,7 @@ public class Customer extends Thread{
     }//end bank
 
     public void run(){
+<<<<<<< Updated upstream
         for(int i = 0; i < 4; i++){
             try{
                 synchronized(banks){
@@ -31,5 +42,8 @@ public class Customer extends Thread{
 
         System.out.println("Thead running");
         banks.displayFinal();
+=======
+         
+>>>>>>> Stashed changes
     }//end run
 }

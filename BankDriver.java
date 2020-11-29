@@ -1,3 +1,7 @@
+/*
+* BankDriver.java
+* @author Rose, Thomas, Patrick
+*/
 import java.util.Scanner;
 
 public class BankDriver{
@@ -23,6 +27,7 @@ public class BankDriver{
         }
 
 
-        banks.displayFinal();
+        bank.displayFinal();
+        scan.close(); // close scanner after using
     }//end main
 }//end BankDriver

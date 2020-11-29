@@ -1,3 +1,7 @@
+/*
+* BankImplement.java
+* @author Rose, Thomas, Patrick
+*/
 import java.util.Arrays;
 public class BankImplement implements Bank{
     int numOfCustomers;         //number of customers
@@ -43,7 +47,7 @@ public class BankImplement implements Bank{
     /**
      * Add a customer and generate random request
      * customerNumber   -The number of the customer
-     * 
+     * @param customerNumber
      * 
      */
     public void addCustomer(int customerNumber){
@@ -104,6 +108,9 @@ public class BankImplement implements Bank{
      * Release resources
      * customerNumber   -The customer releasing resources
      * 
+     * relase   -The resources being released
+     * @param customerNumber 
+     * @param release
      */
     public synchronized void releaseResources(int customerNumber){
         for(int i = 0; i < numOfResources; i++){
@@ -118,6 +125,7 @@ public class BankImplement implements Bank{
      * calculateNeed
      * Checks to see if customer can get resources
      * customerNumber -The customer reuqesting resource
+     * @param customerNumber
      */
     public void calculateNeed(int customerNumber){
         for(int i = 0; i < numOfResources; i++){
@@ -134,6 +142,8 @@ public class BankImplement implements Bank{
      * Returns:
      *  -True if available >= needs
      *  -False if available < needs
+     * @param customerNumber
+     * 
      */
     public boolean canRun(int customerNumber){
         boolean safeToRun = false;
