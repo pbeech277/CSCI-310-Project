@@ -1,22 +1,35 @@
-public class Customer implements Runnable{
-    Bank bank;
-    int threads = 5;
+public class Customer extends Thread{
+    Bank banks;
+    private int customerNumbers;
 
-    int numOfResources;         //number of resources
-    private int[] maximum;    //maximum demand for each customer
-    private int[] request;
-    private int customerNumber;
-
-    public Customer(int customerNumber, int[] maximum, Bank bank){
-        this.customerNumber = customerNumber;
-        this.maximum = new int[maximum.length];
-        this.bank = bank;
-
-        
+    public Customer(int customerNumber, Bank bank){
+        banks = bank;
+        customerNumbers = customerNumber;
+          
 
     }//end bank
 
     public void run(){
-        
+        for(int i = 0; i < 4; i++){
+            try{
+                synchronized(banks){
+                    banks.addCustomer(customerNumbers);           //generate request
+                    banks.calculateNeed(customerNumbers);         //calculate need
+                    banks.runThread(customerNumbers);
+                }
+                //holds resources for a random amount of time (1-5 seconds)
+                int time = (int)(5*Math.random());
+                Thread.sleep(time *1000);
+                
+                //release resources
+                banks.releaseResources(customerNumbers);
+            }catch(Exception e){
+                System.out.println("\nException has been caught");
+            }
+
+        }
+
+        System.out.println("Thead running");
+        banks.displayFinal();
     }//end run
 }

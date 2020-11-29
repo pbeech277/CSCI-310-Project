@@ -8,13 +8,14 @@ public class BankImplement implements Bank{
     private int[][] allocation; //amount currently allocated to each customer
     private int[][] maximum;    //maximum demand for each customer
     private int[][] need;       //remaining needs of each customer
-    private int[] customerRequest;  //keep track of customer requests
+    private int[] customerRequest;  //keep track of customer requests\
+    private int[] safeSequence;     //keeps the safe sequence
 
     /**
      * Bank Constructor
      * @param resources
      */
-    public BankImplement(int resources, int customers){
+    public BankImplement(int customers,int resources){
         numOfResources = resources;
         numOfCustomers = customers;
 
@@ -29,22 +30,14 @@ public class BankImplement implements Bank{
             available[i] = (int)Math.round(Math.random()*(maximumDemand-minumimDemand)+minumimDemand);
         }
 
-        //ramdomly generate maximum
+        //randomly generate maximum
         for(int i = 0; i < numOfCustomers; i++){
             for(int j = 0; j < numOfResources; j++){
                 maximum[i][j] = (int)Math.round(Math.random()*(available[j] - minumimDemand)+minumimDemand);
             }
         }
 
-        //display whatever matrices (maximum in this case)
-        for(int i = 0; i < numOfCustomers; i++){
-            for(int j = 0; j < numOfResources; j++){
-                System.out.print(maximum[i][j] + " ");
-            }
-            System.out.println();
-        }
-
-
+        getState();
     }//end BankImplement
 
     /**
@@ -54,43 +47,69 @@ public class BankImplement implements Bank{
      * 
      */
     public void addCustomer(int customerNumber){
+        System.out.println("\nCustomer " + customerNumber + " is making a request.");
         for(int i = 0; i < numOfResources; i++){
             customerRequest[i] = (int)Math.round(Math.random()*(maximum[customerNumber][i]-minumimDemand)+minumimDemand);
             allocation[customerNumber][i] = customerRequest[i];
         }
         
+        //Print request
+        for(int i = 0; i < numOfResources; i++){
+            System.out.print(customerRequest[i] + " ");
+        }
     }//end addCustomer
 
+    
     /**
      * Output the value of available, maximum,
      * allocation, and need
      */
     public void getState(){
         //outputs available
-        for(int i = 0; i < numOfResources; i++)
+        System.out.println("\n\nBank - Resources Available:");
             System.out.println(Arrays.toString(available));
         
         //outputs maximum
-         for(int i = 0; i < numOfResources; i++)
-            System.out.println(Arrays.toString(maximum));
+        System.out.println("\nBank - Max");
+        for(int i = 0; i < numOfCustomers; i++){
+            System.out.print("[ ");
+            for(int j = 0; j < numOfResources; j++){
+                System.out.print(maximum[i][j]);
+                System.out.print(" ");
+            }
+            System.out.print("]\n");
+        }
 
         //outputs allocation
-        for(int i = 0; i < numOfResources; i++)
-            System.out.println(Arrays.toString(allocation));
+        System.out.println("\nBank - Allocation");
+        for(int i = 0; i < numOfCustomers; i++){
+                for(int j = 0; j < numOfResources; j++){
+                    System.out.print(allocation[i][j] + " ");
+                }
+                System.out.println();
+            }
 
         //outputs need
-        for(int i = 0; i < numOfResources; i++)
-            System.out.println(Arrays.toString(need));
-    
+        System.out.println("\nBank - Need");
+        for(int i = 0; i < numOfCustomers; i++){
+            for(int j = 0; j < numOfResources; j++){
+                System.out.print(need[i][j] + " ");
+            }
+            System.out.println();
+        }
 
     }//end getState
 
     /**
      * Release resources
      * customerNumber   -The customer releasing resources
-     * relase   -The resources being released
+     * 
      */
-    public synchronized void releaseResources(int customerNumber,int[] release){
+    public synchronized void releaseResources(int customerNumber){
+        for(int i = 0; i < numOfResources; i++){
+            available[i] += allocation[customerNumber][i];
+            allocation[customerNumber][i] -= allocation[customerNumber][i];
+        }
 
     }//end releaseResources
 
@@ -105,26 +124,62 @@ public class BankImplement implements Bank{
             int cusNeed = maximum[customerNumber][i] - allocation[customerNumber][i];
             need[customerNumber][i] = cusNeed = Math.abs(cusNeed);
         }
+        getState();
     }//end calculateNeed
 
     /**
      * Checks to see if customer can get resources
      * customerNumber -The customer requesting resource
+     * 
+     * Returns:
+     *  -True if available >= needs
+     *  -False if available < needs
      */
     public boolean canRun(int customerNumber){
-        boolean safeToRun = true;
+        boolean safeToRun = false;
 
         for(int i = 0; i < numOfResources; i++){
-            if(customerRequest[i] > need[customerNumber][i]){
-                safeToRun = false;
-                break;
+            if(available[i] <= need[customerNumber][i]){
+                safeToRun = true;
             }
-            if(safeToRun && customerRequest[i] > available[i]){
+            else{
                 safeToRun = false;
                 break;
             }
         }
         return safeToRun;
     }//end canRun
+
+    /**
+     * Checks to see if a thread can run
+     * @param
+     * customerNumber -The customer/thread
+     * i              -The cycle the thread is in            
+     */
+    public void runThread(int customerNumber){
+        if(canRun(customerNumber)){
+            for(int j = 0; j <numOfResources; j++){
+                available[j] += allocation[customerNumber][j];
+            }
+        }
+    }
+
+    /**
+     * Displays Final Available Vector and Final Allocation Matrix
+     * @param
+     * none
+     */
+    public void displayFinal(){
+        System.out.println("\n\nFinal Available Vector:");
+        System.out.println(Arrays.toString(available));
+
+        System.out.println("Final Allocation Matrix: ");
+        for(int i = 0; i < numOfCustomers; i++){
+            for(int j = 0; j < numOfResources; j++){
+                System.out.print(allocation[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }//end displayFinal
 
 }//end BankImplement

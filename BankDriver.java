@@ -4,15 +4,25 @@ public class BankDriver{
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
 
-        System.out.println("Enter the number of resources: ");
-        int resourceNum = scan.nextInt();
         System.out.println("Enter the number of customers: ");
         int customerNum = scan.nextInt();
+        System.out.println("Enter the number of resources: ");
+        int resourceNum = scan.nextInt();
+
+        //create new bank
+        BankImplement bank = new BankImplement(customerNum,resourceNum);
+
+        //create customer threads
+        Customer[] customers = new Customer[customerNum];
+        for(int i = 0; i < customerNum; i++){
+            customers[i] = new Customer(i, bank);
+        }
+
+        for(Customer i: customers){
+            i.start();
+        }
 
 
-        BankImplement bank = new BankImplement(resourceNum,customerNum);
-
-
-
-    }
-}
+        banks.displayFinal();
+    }//end main
+}//end BankDriver

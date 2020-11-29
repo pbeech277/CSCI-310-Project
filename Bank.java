@@ -25,9 +25,9 @@ public interface Bank{
     /**
      * Release resources
      * customerNumber   -The customer releasing resources
-     * relase   -The resources being released
+     * 
      */
-    public void releaseResources(int customerNumber,int[] release);
+    public void releaseResources(int customerNumber);
 
     /**
      * Calculates the need
@@ -40,5 +40,20 @@ public interface Bank{
      * customerNumber -The customer requesting resource
      */
     public boolean canRun(int customerNumber);
+
+    /**
+     * Runs customer thread
+     * @param
+     * customerNumber -The customer/thread
+     * cycle            -What cycle the customer/thread is in
+     */
+    public void runThread(int customerNumber);
+
+    /**
+     * Displays Final Available Vector and Final Allocation Matrix
+     * @param
+     * none
+     */
+    public void displayFinal();
     
 }//end Bank
