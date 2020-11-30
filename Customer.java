@@ -2,11 +2,11 @@
 * Customer.java
 * @author Rose, Thomas, Patrick
 */
-public class Customer extends Thread{
+public class Customer extends Thread implements Runnable{
     Bank banks;
     private int customerNumbers;
 
-public class Customer implements Runnable{
+//public class Customer implements Runnable {
     Bank bank;
     int threads = 5;
 
@@ -40,8 +40,10 @@ public class Customer implements Runnable{
 
         }
 
-        System.out.println("Thead running");
+        System.out.println("Thread running");
         banks.displayFinal();
          
     }//end run
 }
+//}
+
